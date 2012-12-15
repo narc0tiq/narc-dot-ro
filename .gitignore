@@ -1,0 +1,12 @@
+# No dotfiles, except .gitignore itself
+.*
+!.gitignore
+
+# The downloads directory is not part of the code driving the site.
+downloads
+
+# Some extra things are lying around, but also aren't part of the site proper.
+authorized_keys
+toys
+*.html
+
