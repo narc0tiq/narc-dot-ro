@@ -50,7 +50,7 @@ final class SQLEngine {
 		if(empty($this->db) and !$this->db_connect())
 			die('Unable to connect to database');
 
-			$resu = $this->db->query($query);
+		$resu = $this->db->query($query);
 
 		if(empty($resu))
 			return false;
@@ -127,7 +127,7 @@ final class SQLEngine {
 	}
 
 	public function fetch_page($uri) {
-		$q = 'SELECT title, content FROM pages WHERE uri = ?';
+		$q = 'SELECT uri, title, content FROM pages WHERE uri = ?';
 		$sth = $this->db->prepare($q);
 
 		$resu = $sth->execute(array($uri));
@@ -136,6 +136,30 @@ final class SQLEngine {
 			return false;
 
 		return $sth->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function fetch_page_meta($uri) {
+		$q = 'SELECT uri, title FROM pages WHERE uri = ?';
+		$sth = $this->db->prepare($q);
+
+		$resu = $sth->execute(array($uri));
+
+		if(empty($resu))
+			return false;
+
+		return $sth->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function delete_page($uri) {
+		$q = 'DELETE FROM pages WHERE uri = ?';
+		$sth = $this->db->prepare($q);
+
+		$resu = $sth->execute(array($uri));
+
+		if(empty($resu))
+			return false;
+
+		return true;
 	}
 
 	public function add_user($name, $pass, $salt) {
@@ -230,6 +254,18 @@ final class SQLEngine {
 			return array();
 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function delete_download_hits($path) {
+		$q = 'DELETE FROM download_stats WHERE path = ?';
+		$sth = $this->db->prepare($q);
+
+		$resu = $sth->execute(array($path));
+
+		if(empty($resu))
+			return false;
+
+		return true;
 	}
 }
 

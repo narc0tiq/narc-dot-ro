@@ -173,3 +173,11 @@ blockquote {
 	text-align: right;
 	border-top: 1px solid #bbb;
 }
+
+.autohide {
+	display: none;
+}
+
+li:hover .autohide {
+	display: inline;
+}

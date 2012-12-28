@@ -14,7 +14,10 @@ echo '</ul>';
 echo '<h2>Pages (edit)</h2>';
 echo '<ul>';
 foreach($pages as $p) {
-	echo '	<li><a href="/admin/page/'.$p['uri'].'">['.$p['title'].']</a><a href="/'.$p['uri'].'":>('.$p['uri'].')</a></li>';
+	echo '	<li><a href="/admin/page/'.$p['uri'].'">['.$p['title'].']</a>'.
+		'<a href="/'.$p['uri'].'":>('.$p['uri'].')</a>'.
+		'<a class="redlink autohide" href="/admin/forget/page/'.$p['uri'].'">[X]</a>
+	</li>';
 }
 echo '</ul>';
 
@@ -24,7 +27,10 @@ echo '<h2>Download stats</h2>';
 $hits = $sql->download_hits('first_update DESC');
 echo '<ul>';
 foreach($hits as $h) {
-	echo '	<li><a href="/download/'.$h['path'].'">'.$h['path'].'</a>: <strong>'.$h['hits'].'</strong> hits since <strong>'.$h['first_update'].'</strong>.</li>';
+	echo '	<li><a href="/download/'.$h['path'].'">'.$h['path'].'</a>:'.
+		' <strong>'.$h['hits'].'</strong> hits since <strong>'.$h['first_update'].'</strong>. '.
+		'<a class="redlink autohide" href="/admin/forget/download/'.$h['path'].'">[X]</a>'.
+		'</li>';
 }
 echo '</ul>';
 
