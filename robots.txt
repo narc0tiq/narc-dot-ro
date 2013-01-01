@@ -1,1 +1,3 @@
-# This file intentionally left blank (for the moment)
+# Good-faith effort to try to keep the download stats relevant.
+User-agent: *
+Disallow: /download
