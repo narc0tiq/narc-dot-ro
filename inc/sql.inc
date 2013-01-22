@@ -19,8 +19,10 @@ final class SQLEngine {
 
 		if(empty($this->db))
 			return false;
-		else
-			return true;
+
+		// Activate foreign keys whenever we open the DB -- we really want them.
+		$q = 'PRAGMA foreign_keys = ON';
+		return $this->query_ignore_result($q);
 	}
 
 	private function fetch_tables() {
@@ -63,8 +65,8 @@ final class SQLEngine {
 		$q = 'CREATE TABLE users (
 			id INTEGER PRIMARY KEY ASC,
 			name TEXT NOT NULL UNIQUE,
-			pass TEXT NOT NULL,
-			salt TEXT NOT NULL
+			pass TEXT,
+			salt TEXT
 		)';
 
 		return $this->query_ignore_result($q);
@@ -75,9 +77,18 @@ final class SQLEngine {
 		$q = 'CREATE TABLE pages (
 			uri TEXT NOT NULL PRIMARY KEY,
 			title TEXT NOT NULL,
-			content TEXT NOT NULL
+			content TEXT NOT NULL,
+			owner INTEGER DEFAULT NULL REFERENCES users(id)
+				ON DELETE SET NULL
+				ON UPDATE CASCADE
+				DEFERRABLE INITIALLY DEFERRED
 		)';
 
+		if(!$this->query_ignore_result($q)) {
+			return false;
+		}
+
+		$q = 'CREATE INDEX owner_index ON pages(owner)';
 		return $this->query_ignore_result($q);
 	}
 
