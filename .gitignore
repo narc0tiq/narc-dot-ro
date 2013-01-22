@@ -1,12 +1,14 @@
-# No dotfiles, except .gitignore itself
-.*
+# Don't include anything...
+*
+
+# ...except things that are definitely part of the site itself:
 !.gitignore
-
-# The downloads directory is not part of the code driving the site.
-downloads
-
-# Some extra things are lying around, but also aren't part of the site proper.
-authorized_keys
-toys
-*.html
+!css/
+!img/tb*.png
+!inc/
+!pages/
+!README.md
+!favicon.ico
+!index.php
+!robots.txt
 
