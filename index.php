@@ -36,6 +36,10 @@ else
 
 $page_uri = $_ARGS[0];
 
+session_name('narcdotrosessid');
+session_start();
+
+
 if(is_file(PATH_PAGES.'/'.$page_uri.'.inc')) {
 	require(PATH_PAGES.'/'.$page_uri.'.inc');
 	die();

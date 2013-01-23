@@ -1,6 +1,6 @@
 <?PHP
-session_name('narcdotrosessid');
-session_start();
+if($_SESSION['user'] != $conf['default_admin'])
+	die('No, go away.');
 
 $admin_page = 'main';
 if(!empty($_ARGS[1]))

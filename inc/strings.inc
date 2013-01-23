@@ -12,6 +12,50 @@ function header_text($page_name, $page_title) {
 	<title>'.$page_title.' - '.PROG_NAME.'</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/page-style.css" />
+	<link rel="stylesheet" type="text/css" href="'.CSS_URL.'/persona-buttons.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="https://login.persona.org/include.js"></script>
+	<script type="text/javascript">
+	$(function() { // $().ready() handler
+		// Support for Mozilla Persona
+		var signinLink = document.getElementById("signin");
+		if (signinLink) {
+			signinLink.onclick = function(event) {
+				navigator.id.request({
+					siteName:"Narc Dot Ro",
+					oncancel: function() { window.location = signinLink.href; }
+				});
+				event.preventDefault(); event.stopPropagation(); };
+		}
+
+		var signoutLink = document.getElementById("signout");
+		if (signoutLink) {
+			signoutLink.onclick = function(event) { navigator.id.logout(); event.preventDefault(); event.stopPropagation(); };
+		}
+
+		var currentUser = '.(empty($_SESSION['user'])?'null':'"'.$_SESSION['user'].'"').';
+
+		navigator.id.watch({loggedInUser: currentUser,
+			onlogin: function(assertion) {
+				$.ajax({
+					type: "POST",
+					url: "/ajax-endpoint/login",
+					data: {assertion: assertion},
+					success: function(res, status, xhr) { window.location.reload(); },
+					error: function(xhr, status, err) { alert("Login failure: " + err); }
+				});
+			},
+			onlogout: function() {
+				$.ajax({
+					type: "POST",
+					url: "/ajax-endpoint/logout",
+					success: function(res, status, xhr) { window.location.reload(); },
+					error: function(xhr, status, err) { alert("Logout failure: " + err); }
+				});
+			}
+		});
+	});
+	</script>
 </head>
 <body>
 	<div id="header">
@@ -21,7 +65,7 @@ function header_text($page_name, $page_title) {
 		<div id="column-wrapper">
 			<div id="content">
 				<h2 id="title">'.$page_title.'</h2>
-<!-- The stuff after this is just what came out of Markdown -->
+<!-- The stuff after this is no longer header stuff -->
 ';
 }
 
@@ -44,10 +88,19 @@ function sidebar_text($page_name = '') {
 
 	<p>Internal stuff</p>
 	<ul>
+		<li>'.(empty($_SESSION['user'])?login_link():logout_text()).'</li>
 		<li>'.($page_name == 'admin' ? '<b>Admin</b>' : '<a href="/admin">Admin</a>').'</li>
 	</ul>
 </div>
 ';
+}
+
+function login_link() {
+	return '<a href="/admin/login" id="signin" class="persona-button dark"><span>Log In</span></a>';
+}
+
+function logout_text() {
+	return 'Logged in as <b>'.$_SESSION['user'].'</b>.<br/><a href="/admin/logout" id="signout" class="persona-button dark"><span>Log Out</span></a>';
 }
 
 function footer_text() {
