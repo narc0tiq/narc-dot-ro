@@ -2,7 +2,7 @@
 *
 
 # ...except things that are definitely part of the site itself:
-!.gitignore
+!.git*
 !css/
 !img/tb*.png
 !inc/
