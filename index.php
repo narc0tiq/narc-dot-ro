@@ -39,6 +39,9 @@ $page_uri = $_ARGS[0];
 session_set_cookie_params(24 * 3600);
 session_name('narcdotrosessid');
 session_start();
+if(empty($_SESSION['csrf_token'])) {
+	$_SESSION['csrf_token'] = strgen(12);
+}
 
 
 if(is_file(PATH_PAGES.'/'.$page_uri.'.inc')) {

@@ -34,13 +34,14 @@ function header_text($page_name, $page_title) {
 		}
 
 		var currentUser = '.(empty($_SESSION['user'])?'null':'"'.$_SESSION['user'].'"').';
+		var csrf_token = "'.$_SESSION['csrf_token'].'";
 
 		navigator.id.watch({loggedInUser: currentUser,
 			onlogin: function(assertion) {
 				$.ajax({
 					type: "POST",
 					url: "/ajax-endpoint/login",
-					data: {assertion: assertion},
+					data: {assertion: assertion, csrf: csrf_token},
 					success: function(res, status, xhr) { window.location.reload(); },
 					error: function(xhr, status, err) { alert("Login failure: " + err); }
 				});
@@ -131,8 +132,6 @@ function strgen($len=8) {
 		'3','4','5','6','7','8','9','0');
 
 	$len += 0;
-
-	srand(date("s"));
 
 	$resu = "";
 	for ($i = 0; $i < $len; $i++) {

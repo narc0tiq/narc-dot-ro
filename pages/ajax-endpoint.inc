@@ -23,6 +23,11 @@ function verify_login() {
 		header('HTTP/1.x 400 Bad Request');
 		die('You failed to provide a login assertion!');
 	}
+	if(empty($_POST['csrf']) or empty($_SESSION['csrf_token']) or ($_POST['csrf'] != $_SESSION['csrf_token'])) {
+		unset($_SESSION['csrf_token']);
+		header('HTTP/1.x 403 Forbidden');
+		die('You have a bad CSRF token: is someone trying to attack this site with a CSRF?');
+	}
 
 	$url = 'https://verifier.login.persona.org/verify';
 	$assert = filter_input(INPUT_POST, 'assertion', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
@@ -60,6 +65,7 @@ function verify_login() {
 
 	$_SESSION['user'] = $verify->email;
 	echo 'Logged in '.$_SESSION['user'];
+	unset($_SESSION['csrf_token']);
 }
 
 function teardown_session() {
