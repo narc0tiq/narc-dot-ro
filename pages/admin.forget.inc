@@ -1,4 +1,10 @@
 <?PHP
+
+if(empty($_SESSION['user']) || $_SESSION['user'] != $conf['default_admin']) {
+	require(PATH_PAGES.'/403.inc');
+	die();
+}
+
 $forget_what = 'nothing';
 if(!empty($_ARGS[2]))
 	$forget_what = $_ARGS[2];

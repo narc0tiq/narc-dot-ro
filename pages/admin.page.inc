@@ -1,5 +1,10 @@
 <?PHP
 if(!empty($_POST['submit'])) {
+	if(empty($_SESSION['user']) || $_SESSION['user'] != $conf['default_admin']) {
+		require(PATH_PAGES.'/403.inc');
+		die();
+	}
+
 	if(!$sql->add_page($_POST['uri'], $_POST['title'], $_POST['content']))
 		die('Shit, shit, something went wrong!');
 
@@ -25,15 +30,24 @@ if(!empty($_POST['preview'])) {
 	$content = $_POST['content'];
 
 	echo '<div id="previewbox">'.Markdown("## $title ##\n$content").'</div>';
+}
 
+$logged_in = true;
+if(empty($_SESSION['user']) || $_SESSION['user'] != $conf['default_admin']) {
+	$logged_in = false;
+?>
+	<p><strong>Warning</strong>: you are not the administrator, therefore you may not submit a new version of this page. You are free to read its source below, however.</p>
+<?PHP
 }
 ?>
 <form method="post" id="editpage">
-	<label for="uri">URI token: <?PHP echo PROG_URL; ?>/</label><input type="text" name="uri" value="<?PHP echo $uri; ?>" /><br/>
-	<label for="title">Page title:</label> <input type="text" name="title" value="<?PHP echo $title; ?>" /><br/>
-	<textarea name="content"><?PHP echo $content; ?></textarea><br/>
+	<label for="uri">URI token: <?PHP echo PROG_URL; ?>/</label><input type="text" name="uri" value="<?PHP echo $uri; ?>" <?PHP if(!$logged_in) { echo 'readonly="readonly"'; } ?> /><br/>
+	<label for="title">Page title:</label> <input type="text" name="title" value="<?PHP echo $title; ?>" <?PHP if(!$logged_in) { echo 'readonly="readonly"'; } ?> /><br/>
+	<textarea name="content" <?PHP if(!$logged_in) { echo 'readonly="readonly"'; } ?> ><?PHP echo $content; ?></textarea><br/>
 	<div style="text-align: center">
-	<input class="button" type="submit" name="submit" accesskey="s" />
+	<?PHP if($logged_in) { ?>
+		<input class="button" type="submit" name="submit" accesskey="s" />
+	<?PHP } ?>
 	<input class="button" type="submit" name="preview" value="Preview" accesskey="p" />
 	</div>
 </form>
