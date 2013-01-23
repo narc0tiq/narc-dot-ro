@@ -1,14 +1,14 @@
-# Don't include anything...
-*
-
-# ...except things that are definitely part of the site itself:
+# Don't include dotfiles...
+.*
+#...unless they're git's
 !.git*
-!css/
-!img/tb*.png
-!inc/
-!pages/
-!README.md
-!favicon.ico
-!index.php
-!robots.txt
 
+# Furthermore, exclude things on narc.ro that do not have anything to do with the web app
+downloads/
+toys/
+authorized_keys
+*.pdf
+google*.html
+narc.ro*.html
+sleep.html
+zshrc
