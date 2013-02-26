@@ -1,6 +1,7 @@
 <?PHP
 
 final class SQLEngine {
+    /** @var PDO */
 	private $db = null;
 	private $cache = array();
 
@@ -257,11 +258,19 @@ final class SQLEngine {
 			return false;
 	}
 
-	public function download_hits($order) {
-		$q = 'SELECT path, hits, first_update FROM download_stats ORDER BY '.$order;
-		$sth = $this->db->query($q);
+	public function download_hits($order, $prefix = '') {
+        $args = array();
+		$q = 'SELECT path, hits, first_update FROM download_stats';
+        if(!empty($prefix)) {
+            $q .= ' WHERE path LIKE ?';
+            $args[] = $prefix.'%';
+        }
+        $q .= ' ORDER BY '.$order;
 
-		if(empty($sth))
+        $sth = $this->db->prepare($q);
+		$resu = $sth->execute($args);
+
+		if(empty($resu))
 			return array();
 
 		return $sth->fetchAll(PDO::FETCH_ASSOC);
