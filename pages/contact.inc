@@ -34,6 +34,10 @@ when I read my mail, I'll be able to see it. Except that I do sometimes go a day
 without reading my mail. So, you might not get a response quickly. But if that's okay,
 then go right ahead!</p>
 
+<p>You're also welcome to try my other contact details -- they're on <a href="/about">my about page</a>,
+and they're at least reasonably likely to also work. Just be aware I <em>will</em> eat you
+if you interrupt my sleep. Just saying.</p>
+
 <form method="post" id="mailform">
 	<label for="return_addr">If you want me to email you back, type in your address here (optional):</label><br/>
 	<input type="text" name="return_addr" value="" /><br/>
