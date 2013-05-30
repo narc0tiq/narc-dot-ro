@@ -77,8 +77,9 @@ function sidebar_text($page_name = '') {
 	<ul>
 		<li>'.($page_name == 'home' ? '<b>Home</b>' : '<a href="/">Home</a>').'</li>
 		<li>'.($page_name == 'about' ? '<b>About Me</b>' : '<a href="/about">About Me</a>').'</li>
-		<li>'.($page_name == 'articles' ? '<b>Articles and Rants</b>' : '<a href="/articles">Articles and Rants</a>').'</li>
 		<li>'.($page_name == 'contact' ? '<b>Contact Form</b>' : '<a href="/contact">Contact Form</a>').'</li>
+		<li>'.($page_name == 'articles' ? '<b>Articles and Rants</b>' : '<a href="/articles">Articles and Rants</a>').'</li>
+		<li>'.($page_name == 'projects' ? '<b>Projects</b>' : '<a href="/projects">Projects</a>').'</li>
 		<li>'.($page_name == 'help-wanted' ? '<b>Help Wanted!</b>' : '<a href="/help-wanted">Help Wanted!</a>').'</li>
 	</ul>
 
